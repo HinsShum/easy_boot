@@ -1,9 +1,9 @@
 /**
- * /config/options.h
+ * @file /bsp/CY000001/include/bsp_watchdog.c
  *
- * Copyright (C) 2017 HinsShum
+ * Copyright (C) 2020
  *
- * platform.c is free software: you can redistribute it and/or modify
+ * bsp_watchdog.c is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
@@ -15,21 +15,26 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @author HinsShum hinsshum@qq.com
+ *
+ * @encoding utf-8
  */
- 
-#ifndef __OPTIONS_H__
-#define __OPTIONS_H__
 
-#ifdef __cpluscplus
-extern "c"
+/*---------- includes ----------*/
+#include "bsp_watchdog.h"
+
+/*---------- macro ----------*/
+/*---------- variable prototype ----------*/
+/*---------- function prototype ----------*/
+/*---------- type define ----------*/
+/*---------- variable ----------*/
+/*---------- function ----------*/
+bool bsp_watchdog_init(void)
 {
-#endif /* __cpluscplus */
-
-#if defined PLAT_CY000001
-    #include "config/CY000001/options.h"
-#endif
-
-#ifdef __cpluscplus
+    return true;
 }
-#endif /* __cpluscplus */
-#endif /* __OPTIONS_H__ */
+
+void bsp_feeddog(void)
+{
+}

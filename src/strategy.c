@@ -29,15 +29,15 @@ int32_t strategy_check_serial(void) {
 
     if(true == user_serial_get_char(&ch, 1500)) {
         if(ch == ' ') {
-            return SL_EOK;
+            return CY_EOK;
         }
     }
     if(true == user_serial_get_char(&ch, 1500)) {
         if(ch == ' ') {
-            return SL_EOK;
+            return CY_EOK;
         }
     }
-    return SL_E_BUSY;
+    return CY_E_BUSY;
 }
 
 static int32_t strategy_erase_flash(void) {
@@ -48,7 +48,7 @@ static int32_t strategy_erase_flash(void) {
     }
     user_serial_write("\r\nOK\r\n", strlen("\r\nOK\r\n"));
 
-    return SL_EOK;
+    return CY_EOK;
 }
 
 static int32_t strategy_download_file(void) {
@@ -61,7 +61,7 @@ static int32_t strategy_download_file(void) {
 
     res = download_file();
 
-    if(SL_EOK == res) {
+    if(CY_EOK == res) {
         user_serial_write("\r\nOK\r\n", strlen("\r\nOK\r\n"));
     } else {
         user_serial_write("\r\nERROR\r\n", strlen("\r\nERROR\r\n"));
@@ -113,7 +113,7 @@ static int32_t strategy_get_info(void) {
     }
     user_serial_write("\r\n", 2);
 
-    return SL_EOK;
+    return CY_EOK;
 }
 
 int32_t strategy_cmd_process(void) {
@@ -158,6 +158,6 @@ int32_t strategy_cmd_process(void) {
         }
     }
     
-    return SL_EOK;
+    return CY_EOK;
 }
 

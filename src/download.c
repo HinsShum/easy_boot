@@ -11,9 +11,9 @@
 #include "options.h"
 #include "download.h"
 #include "components/ymodem/ymodem.h"
-#include "driver/user_serial.h"
+#include "user_serial.h"
 #include "platform.h"
-#include "utils/md5.h"
+#include "md5.h"
 #include "bsp_flash.h"
 #include "errorno.h"
 #include "firmware.h"
@@ -149,13 +149,13 @@ int32_t download_file(void) {
         download_str_to_hex(m_firmware_md5, buf);
         for(i = 0; i < 16; ++i) {
             if(buf[i] != md5_value[i]) {
-                return SL_ERROR;
+                return CY_ERROR;
             }
         }
         firmware_setinfo(FIRMWARE_SETINFO_CMD_UPDATED_FALSE, NULL, 0);
         firmware_saveinfo();
 
-        return SL_EOK;
+        return CY_EOK;
     }
-    return SL_ERROR;
+    return CY_ERROR;
 }

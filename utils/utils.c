@@ -4,7 +4,7 @@
  * renyong 2012-8-28
  */
 
-#include "utils/utils.h"
+#include "utils.h"
 #include "stdio.h"
 #include "stdlib.h"
 #include "ctype.h"

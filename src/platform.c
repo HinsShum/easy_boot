@@ -22,7 +22,7 @@
 #include "bsp.h"
 #include "bsp_led.h"
 #include "bsp_uart.h"
-//#include "bsp_watchdog.h"
+#include "bsp_watchdog.h"
 #include "bsp_flash.h"
 #include "bsp_spiflash.h"
 #include "platform.h"
@@ -41,13 +41,11 @@ typedef void (*deinit_fnc_t)(void);
 
 /* variable */
 static uint8_t m_uart_fifo_buf[1048];
-#if defined(PLAT_0190016) || defined(PLAT_0290016)
-static struct st_platform_bl_info __attribute__((at(0x20000000))) bl_info = {
+static struct st_platform_bl_info __attribute__((at(SYS_BL_INFO_RAM_ADDRESS))) bl_info = {
     .magic_number = 0x5A5A,
     .reserver = {0},
     .bl_version = SYS_BOOT_VERSION
 };
-#endif
 
 /**
  * initlialize seuqence
@@ -57,7 +55,7 @@ static init_fnc_t init_fnc_sequence[] = {
     bsp_systick1ms_init,
     bsp_flash_init,
     bsp_led_init,
-//  bsp_watchdog_init,
+    bsp_watchdog_init,
     bsp_uart_init,
     bsp_spiflash_init,
     NULL
@@ -211,15 +209,11 @@ static bool platform_misc_init(void)
  */
 static bool platform_driver_init(void)
 {
-    bool retval = true;
-    
-    if(SL_EOK != device_init(&dev_w25qxx)) {
-//        printk("SPI Flash init failed\n");
-//        retval = false;
-    }
-    retval != true ? platform_system_reset() : true;
-    
-    return retval;
+    /* if w25qxx init failed, it also starts normally
+     */
+    device_init(&dev_w25qxx);
+
+    return true;
 }
 
 /**
@@ -264,8 +258,8 @@ void platform_deinit(void)
  */
 void platform_feed_watchdog(void)
 {
-//  extern void bsp_feeddog(void);
-//  bsp_feeddog();
+    extern void bsp_feeddog(void);
+    bsp_feeddog();
 }
 
 /**

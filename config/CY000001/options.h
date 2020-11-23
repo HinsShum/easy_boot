@@ -31,8 +31,11 @@
 /*---------- macro ----------*/
 #define SYS_BOOT_VERSION                        ("V1.00")
 #ifndef SYS_HARD_VERSION
-#define SYS_HARD_VERSION                        ("RSTF103ZET6")
+#define SYS_HARD_VERSION                        ("CY000001")
 #endif
+
+/* bootloader information address in SRAM */
+#define SYS_BL_INFO_RAM_ADDRESS                 (SRAM_BASE)
 
 /* MCU SRAM information */
 #define SYS_SRAM_ADDR_START                     (SRAM_BASE)

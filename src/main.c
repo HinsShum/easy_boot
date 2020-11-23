@@ -38,7 +38,7 @@ int main(void)
     cpu_freq_config();
     /* Initialize some of the necessary things for bootloader */
     platform_init();
-    if(SL_EOK == strategy_check_serial()) {
+    if(CY_EOK == strategy_check_serial()) {
         strategy_cmd_process();
     }
     if(g_platform.bin.magic_number == PLATFORM_BIN_MAGIC && g_platform.bin.bin_updated == false) {

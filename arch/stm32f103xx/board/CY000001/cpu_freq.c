@@ -50,7 +50,7 @@ void cpu_freq_config(void)
 #if HSE_VALUE > 8000000
     pll_init_structure.Prediv =LL_RCC_PREDIV_DIV_2;
 #else
-    pll_init_structure.Prediv =LL_RCC_PREDIV_DIV_1;
+    pll_init_structure.Prediv = LL_RCC_PREDIV_DIV_1;
 #endif
     pll_init_structure.PLLMul = LL_RCC_PLL_MUL_9;
     clk_init_structure.AHBCLKDivider = LL_RCC_SYSCLK_DIV_1;
