@@ -33,6 +33,10 @@
 #include "sl_crc.h"
 
 /* marco */
+#if defined(__GNUC__)
+    #define strlcpy             strncpy
+#endif
+
 #define UART_FIFO_BUF_LENGTH    (1024)
 
 /* type define */
@@ -41,11 +45,13 @@ typedef void (*deinit_fnc_t)(void);
 
 /* variable */
 static uint8_t m_uart_fifo_buf[1048];
+#if defined(__CC_ARM)
 static struct st_platform_bl_info __attribute__((at(SYS_BL_INFO_RAM_ADDRESS))) bl_info = {
     .magic_number = 0x5A5A,
     .reserver = {0},
     .bl_version = SYS_BOOT_VERSION
 };
+#endif
 
 /**
  * initlialize seuqence

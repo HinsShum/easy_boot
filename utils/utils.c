@@ -65,10 +65,12 @@ char* utils_strtok_r(char *s, const char *delim, char **save_ptr) {
     return token;
 }
 
+#if defined(__CC_ARM)
 char* utils_strtok(char *s, const char *delim) {
     static char *last;
     return strtok_r(s, delim, &last);
 }
+#endif
 
 
 int utils_strtolower(char *s, int len) {

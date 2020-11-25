@@ -28,6 +28,7 @@
 #include "device.h"
 #include "firmware.h"
 #include <stdlib.h>
+#include <string.h>
 
 /* marco */
 #define firmware_debug(x, y...)     printk(x, ##y)

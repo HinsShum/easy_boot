@@ -10,7 +10,7 @@
 #include <string.h>
 #include "options.h"
 #include "download.h"
-#include "components/ymodem/ymodem.h"
+#include "ymodem.h"
 #include "user_serial.h"
 #include "platform.h"
 #include "md5.h"

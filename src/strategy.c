@@ -19,6 +19,7 @@
 #include "md5.h"
 #include "errorno.h"
 #include "utils.h"
+#include <string.h>
 
 extern struct st_platform_descibe g_platform;
 
