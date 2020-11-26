@@ -33,10 +33,6 @@
 #include "sl_crc.h"
 
 /* marco */
-#if defined(__GNUC__)
-    #define strlcpy             strncpy
-#endif
-
 #define UART_FIFO_BUF_LENGTH    (1024)
 
 /* type define */
@@ -47,11 +43,14 @@ typedef void (*deinit_fnc_t)(void);
 static uint8_t m_uart_fifo_buf[1048];
 #if defined(__CC_ARM)
 static struct st_platform_bl_info __attribute__((at(SYS_BL_INFO_RAM_ADDRESS))) bl_info = {
+#elif defined(__GNUC__)
+static struct st_platform_bl_info __attribute__((__used__, section(".bootloader_info"))) bl_info = {
+#endif
     .magic_number = 0x5A5A,
     .reserver = {0},
     .bl_version = SYS_BOOT_VERSION
 };
-#endif
+
 
 /**
  * initlialize seuqence
@@ -130,27 +129,27 @@ static void platform_load_app_info(void)
             goto crc_err;
         }
         p = (uint8_t *)int2str(bin_info.bin_size, (char *)tmp_buf, sizeof(tmp_buf));
-        strlcpy((char *)g_platform.app.image_size, (char *)p, sizeof(g_platform.app.image_size));
+        strncpy((char *)g_platform.app.image_size, (char *)p, sizeof(g_platform.app.image_size) - 1);
         p = (uint8_t *)int2str(bin_info.bin_buildno, (char *)tmp_buf, sizeof(tmp_buf));
-        strlcpy((char *)g_platform.app.buildno, (char *)p, sizeof(g_platform.app.buildno));
-        strlcpy((char *)g_platform.app.image_md5, (char *)bin_info.bin_md5, sizeof(g_platform.app.image_md5));
+        strncpy((char *)g_platform.app.buildno, (char *)p, sizeof(g_platform.app.buildno) - 1);
+        strncpy((char *)g_platform.app.image_md5, (char *)bin_info.bin_md5, sizeof(g_platform.app.image_md5));
         if(bin_info.bin_updated == true) {
-            strlcpy((char *)g_platform.app.image_updated, "true", sizeof(g_platform.app.image_updated));
+            strncpy((char *)g_platform.app.image_updated, "true", sizeof(g_platform.app.image_updated) - 1);
         } else {
-            strlcpy((char *)g_platform.app.image_updated, "false", sizeof(g_platform.app.image_updated));
+            strncpy((char *)g_platform.app.image_updated, "false", sizeof(g_platform.app.image_updated) - 1);
         }
-        strlcpy((char *)g_platform.app.model_hw, (char *)bin_info.model_hw, sizeof(g_platform.app.model_hw));
-        strlcpy((char *)g_platform.app.model_fun, (char *)bin_info.model_fun, sizeof(g_platform.app.model_fun));
+        strncpy((char *)g_platform.app.model_hw, (char *)bin_info.model_hw, sizeof(g_platform.app.model_hw));
+        strncpy((char *)g_platform.app.model_fun, (char *)bin_info.model_fun, sizeof(g_platform.app.model_fun));
 
         g_platform.bin = bin_info;
     } else {
 crc_err:
-        strlcpy((char *)g_platform.app.image_md5, "UNKNOW", sizeof(g_platform.app.image_md5));
-        strlcpy((char *)g_platform.app.image_size, "UNKNOW", sizeof(g_platform.app.image_size));
-        strlcpy((char *)g_platform.app.buildno, "?", sizeof(g_platform.app.buildno));
-        strlcpy((char *)g_platform.app.image_updated, "UNKNOW", sizeof(g_platform.app.image_updated));
-        strlcpy((char *)g_platform.app.model_hw, SYS_HARD_VERSION, sizeof(g_platform.app.model_hw));
-        strlcpy((char *)g_platform.app.model_fun, SYS_HARD_VERSION, sizeof(g_platform.app.model_fun));
+        strncpy((char *)g_platform.app.image_md5, "UNKNOW", sizeof(g_platform.app.image_md5));
+        strncpy((char *)g_platform.app.image_size, "UNKNOW", sizeof(g_platform.app.image_size));
+        strncpy((char *)g_platform.app.buildno, "?", sizeof(g_platform.app.buildno));
+        strncpy((char *)g_platform.app.image_updated, "UNKNOW", sizeof(g_platform.app.image_updated));
+        strncpy((char *)g_platform.app.model_hw, SYS_HARD_VERSION, sizeof(g_platform.app.model_hw));
+        strncpy((char *)g_platform.app.model_fun, SYS_HARD_VERSION, sizeof(g_platform.app.model_fun));
     }
 }
 

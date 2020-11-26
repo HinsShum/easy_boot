@@ -68,19 +68,18 @@ set(C_SOURCE_FILES)
 set(C_SOURCE_LIBS)
 
 # add sub directory
-add_subdirectory(arch)
-add_subdirectory(bsp)
+if("${BOARD_NAME}" STREQUAL "CY000001")
+    add_subdirectory(arch/stm32f103xx)
+    add_subdirectory(bsp/CY000001)
+    add_subdirectory(lib/st/stm32f1xx/STM32F1xx_HAL_Driver/Src)
+endif()
 add_subdirectory(components)
 add_subdirectory(driver)
 add_subdirectory(src)
 add_subdirectory(utils)
-if("${BOARD_NAME}" STREQUAL "CY000001")
-    add_subdirectory(lib/st/stm32f1xx/STM32F1xx_HAL_Driver/Src)
-endif()
 
-# message("C_SOURCE_FILES:${C_SOURCE_FILES}")
-# message("G_SOURCE_INCLUDE_DIRS:${G_SOURCE_INCLUDE_DIRS}")
-# message("C_SOURCE_LIBS:${C_SOURCE_LIBS}")
+# tell cmake asm file also is c file
+set_property(SOURCE ${C_SOURCE_FILES} PROPERTY LANGUAGE C)
 
 add_executable(${PROJECT_NAME}.elf ${C_SOURCE_FILES})
 target_include_directories(${PROJECT_NAME}.elf PRIVATE "${G_SOURCE_INCLUDE_DIRS}")

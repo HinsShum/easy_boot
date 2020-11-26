@@ -134,12 +134,20 @@ void bsp_systick_isr(void)
  */
 bool bsp_init(void)
 {
+#if defined(__CC_ARM)
     extern uint32_t Image$$ER_IROM1$$Base[];
+    uint32_t base = (uint32_t)Image$$ER_IROM1$$Base;
+#elif defined(__GNUC__)
+    extern uint32_t _svector;
+    uint32_t base = (uint32_t)&_svector;
+#else
+    #error "not support this compiler for relocate the vector table"
+#endif
     /* Relocate vector table */
 #ifdef VECT_TAB_SRAM
-    SCB->VTOR = SRAM_BASE | ((uint32_t)Image$$ER_IROM1$$Base - SRAM_BASE);  /* Vector Table Relocation in Internal SRAM */
+    SCB->VTOR = SRAM_BASE | (base - SRAM_BASE);  /* Vector Table Relocation in Internal SRAM */
 #else
-    SCB->VTOR = FLASH_BASE | ((uint32_t)Image$$ER_IROM1$$Base - FLASH_BASE); /* Vector Table Relocation in Internal FLASH */
+    SCB->VTOR = FLASH_BASE | (base - FLASH_BASE); /* Vector Table Relocation in Internal FLASH */
 #endif
     NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
     LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_AFIO);

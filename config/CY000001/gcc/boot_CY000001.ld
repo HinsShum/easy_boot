@@ -52,6 +52,7 @@ SECTIONS
   .isr_vector :
   {
     . = ALIGN(4);
+    _svector = .;        /*<< for reelocate the vector table */
     KEEP(*(.isr_vector)) /* Startup code */
     . = ALIGN(4);
   } >FLASH
@@ -118,6 +119,7 @@ SECTIONS
   {
     . = ALIGN(4);
     _sdata = .;        /* create a global symbol at data start */
+    KEEP (*(.bootloader_info))
     *(.data)           /* .data sections */
     *(.data*)          /* .data* sections */
 

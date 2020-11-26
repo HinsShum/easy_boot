@@ -1,4 +1,4 @@
-# @file /toolchain_cortexm3.cmake
+# @file CY000001_toolchain.cmake
 # @author HinsShum hinsshum@qq.com
 # @date 2020-07-08
 # @brief usage -DCMAKE_TOOLCHAIN_FILE="pathname"
@@ -6,7 +6,9 @@ set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_SYSTEM_PROCESSOR Arm)
 
 # set dir variables
-set(CROSS_COMPILER_DIR "")
+if(NOT DEFINED CROSS_COMPILER_DIR)
+    set(CROSS_COMPILER_DIR "")
+endif()
 
 # set compiler
 set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY") # to avoid error when cmake -B build
@@ -21,8 +23,10 @@ add_definitions(-DSTM32F103xE -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -DHSE_VALUE=
 set(MCU_FLAGS "-mcpu=cortex-m3 -mthumb")
 set(CMAKE_C_FLAGS "${MCU_FLAGS} -Wall -Werror -std=c99 -ffunction-sections -fdata-sections")
 set(CMAKE_C_FLAGS_DEBUG "-O0 -g")
-set(CMAKE_C_FLAGS_RELEASE "-O3")
-set(CMAKE_BUILD_TYPE "Debug")
+set(CMAKE_C_FLAGS_RELEASE "-O1")
+if(NOT DEFINED CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Debug")
+endif()
 
 # set linker flags
 set(LINK_SCRIPT_FLAGS "-Wl,--gc-sections,-T${PROJECT_SOURCE_DIR}/config/${BOARD_NAME}/gcc/boot_${BOARD_NAME}.ld")
