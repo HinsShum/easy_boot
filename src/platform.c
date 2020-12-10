@@ -74,6 +74,7 @@ static deinit_fnc_t deinit_fnc_sequence[] = {
     bsp_systick_deinit,
     bsp_uart_deinit,
     bsp_spiflash_deinit,
+    bsp_led_deinit,
     NULL
 };
 

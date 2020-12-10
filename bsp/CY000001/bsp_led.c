@@ -24,8 +24,8 @@
 #include "bsp_led.h"
 
 /*---------- macro ----------*/
-#define BSP_LED_SYS_PORT            (GPIOF)
-#define BSP_LED_SYS_PIN             (LL_GPIO_PIN_7)
+#define BSP_LED_SYS_PORT            (GPIOB)
+#define BSP_LED_SYS_PIN             (LL_GPIO_PIN_5)
 
 /*---------- variable prototype ----------*/
 /*---------- function prototype ----------*/
@@ -36,8 +36,8 @@ bool bsp_led_init(void)
 {
     LL_GPIO_InitTypeDef gpio_init_structure;
 
-    LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOF);
-    while(true != LL_APB2_GRP1_IsEnabledClock(LL_APB2_GRP1_PERIPH_GPIOF));
+    LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOB);
+    while(true != LL_APB2_GRP1_IsEnabledClock(LL_APB2_GRP1_PERIPH_GPIOB));
 
     LL_GPIO_SetOutputPin(BSP_LED_SYS_PORT, BSP_LED_SYS_PIN);
     LL_GPIO_StructInit(&gpio_init_structure);
@@ -48,6 +48,11 @@ bool bsp_led_init(void)
     LL_GPIO_Init(BSP_LED_SYS_PORT, &gpio_init_structure);
 
     return true;
+}
+
+void bsp_led_deinit(void)
+{
+    LL_GPIO_SetOutputPin(BSP_LED_SYS_PORT, BSP_LED_SYS_PIN);
 }
 
 void bsp_led_on(uint8_t led_id)

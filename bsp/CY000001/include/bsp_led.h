@@ -33,6 +33,7 @@
 /*---------- variable prototype ----------*/
 /*---------- function prototype ----------*/
 extern bool bsp_led_init(void);
+extern void bsp_led_deinit(void);
 extern void bsp_led_on(uint8_t led_id);
 extern void bsp_led_off(uint8_t led_id);
 extern void bsp_led_revert(uint8_t led_id);

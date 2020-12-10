@@ -34,6 +34,8 @@ void cpu_freq_config(void)
     LL_UTILS_PLLInitTypeDef pll_init_structure = {0};
     LL_UTILS_ClkInitTypeDef clk_init_structure = {0};
 
+    /* Restore RCC */
+    LL_RCC_DeInit();
     /* Enable Prefetch Buffer */
     LL_FLASH_EnablePrefetch();
     /* After a system reset, the HSI oscollator will be selected as system clock.
