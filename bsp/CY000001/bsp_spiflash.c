@@ -36,9 +36,9 @@ struct st_device dev_w25qxx;
 static bool bsp_spiflash_cs_ctl(bool on)
 {
     if(on) {
-        LL_GPIO_ResetOutputPin(GPIOA, LL_GPIO_PIN_4);
+        LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_12);
     } else {
-        LL_GPIO_SetOutputPin(GPIOA, LL_GPIO_PIN_4);
+        LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_12);
     }
 
     return true;
@@ -46,48 +46,48 @@ static bool bsp_spiflash_cs_ctl(bool on)
 
 static uint8_t bsp_spiflash_xfer(uint8_t ch)
 {
-    while(true != LL_SPI_IsActiveFlag_TXE(SPI1));
-    LL_SPI_TransmitData8(SPI1, ch);
-    while(true != LL_SPI_IsActiveFlag_RXNE(SPI1));
-    return LL_SPI_ReceiveData8(SPI1);
+    while(true != LL_SPI_IsActiveFlag_TXE(SPI2));
+    LL_SPI_TransmitData8(SPI2, ch);
+    while(true != LL_SPI_IsActiveFlag_RXNE(SPI2));
+    return LL_SPI_ReceiveData8(SPI2);
 }
 
 static void bsp_spiflash_io_init(void)
 {
     LL_GPIO_InitTypeDef gpio_init_structure;
 
-    LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOA);
-    while(true != LL_APB2_GRP1_IsEnabledClock(LL_APB2_GRP1_PERIPH_GPIOA));
+    LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_GPIOB);
+    while(true != LL_APB2_GRP1_IsEnabledClock(LL_APB2_GRP1_PERIPH_GPIOB));
     /* GPIO configure
-     * CS   ---> PA4
-     * CLK  ---> PA5
-     * MOSI ---> PA7
-     * MISO ---> PA6
+     * CS   ---> PB12
+     * CLK  ---> PB13
+     * MOSI ---> PB15
+     * MISO ---> PB14
      */
     LL_GPIO_StructInit(&gpio_init_structure);
-    gpio_init_structure.Pin = LL_GPIO_PIN_6;
-    LL_GPIO_Init(GPIOA, &gpio_init_structure);
+    gpio_init_structure.Pin = LL_GPIO_PIN_14;
+    LL_GPIO_Init(GPIOB, &gpio_init_structure);
 
-    LL_GPIO_SetOutputPin(GPIOA, LL_GPIO_PIN_4);
-    gpio_init_structure.Pin = LL_GPIO_PIN_4;
+    gpio_init_structure.Pin = LL_GPIO_PIN_12;
     gpio_init_structure.Mode = LL_GPIO_MODE_OUTPUT;
     gpio_init_structure.Speed = LL_GPIO_SPEED_FREQ_HIGH;
     gpio_init_structure.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
-    LL_GPIO_Init(GPIOA, &gpio_init_structure);
+    LL_GPIO_Init(GPIOB, &gpio_init_structure);
+    LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_12);
 
-    gpio_init_structure.Pin = LL_GPIO_PIN_5 | LL_GPIO_PIN_7;
+    gpio_init_structure.Pin = LL_GPIO_PIN_13 | LL_GPIO_PIN_15;
     gpio_init_structure.Mode = LL_GPIO_MODE_ALTERNATE;
     gpio_init_structure.Speed = LL_GPIO_SPEED_FREQ_HIGH;
     gpio_init_structure.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
-    LL_GPIO_Init(GPIOA, &gpio_init_structure);
+    LL_GPIO_Init(GPIOB, &gpio_init_structure);
 }
 
 static void bsp_spiflash_reg_init(void)
 {
     LL_SPI_InitTypeDef spi_init_structure;
 
-    LL_APB2_GRP1_EnableClock(LL_APB2_GRP1_PERIPH_SPI1);
-    while(true != LL_APB2_GRP1_IsEnabledClock(LL_APB2_GRP1_PERIPH_SPI1));
+    LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_SPI2);
+    while(true != LL_APB1_GRP1_IsEnabledClock(LL_APB1_GRP1_PERIPH_SPI2));
     /* spi clock = 72M / 64 = 1.125M */
     LL_SPI_StructInit(&spi_init_structure);
     spi_init_structure.Mode = LL_SPI_MODE_MASTER;
@@ -95,8 +95,8 @@ static void bsp_spiflash_reg_init(void)
     spi_init_structure.ClockPhase = LL_SPI_PHASE_1EDGE;
     spi_init_structure.NSS = LL_SPI_NSS_SOFT;
     spi_init_structure.BaudRate = LL_SPI_BAUDRATEPRESCALER_DIV64;
-    LL_SPI_Init(SPI1, &spi_init_structure);
-    LL_SPI_Enable(SPI1);
+    LL_SPI_Init(SPI2, &spi_init_structure);
+    LL_SPI_Enable(SPI2);
 }
 
 bool bsp_spiflash_init(void)
@@ -113,7 +113,7 @@ bool bsp_spiflash_init(void)
 
 void bsp_spiflash_deinit(void)
 {
-    LL_SPI_Disable(SPI1);
-    LL_SPI_DeInit(SPI1);
+    LL_SPI_Disable(SPI2);
+    LL_SPI_DeInit(SPI2);
 }
 
